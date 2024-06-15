@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Reserver</title>
+</head>
+<body>
+    
+    <div class="mainContent">
+        <%- include('./layout/navbar') %>
+        
+        <div class="form">
+            <div class="reserver fadeOut">
+                <div class="formVraie">
+                    <fieldset class="research">
+                        <legend>Recherche des voyages prévus</legend> 
+                        <form action="/voyage/search" method="post" class="ajout" style="grid-column: 1/3;">
+
+                            <span class="searchBar">
+                                <span class="nom">
+                                    <label for="idV">Destination</label></br>
+                                    <input type= "text" id="idV" name="destination" placeholder="Tana">
+                                </span>
+                        
+                            </span>
+                            <span class="num">
+                                <label for="dateVoyage">Date de Voyage</label></br>
+                                <input type= "date" id="dateVoyage" name="dateVoyage">
+                            </span>
+                        
+                            <input type="submit" value="Afficher" style="grid-row: 3/4; grid-column: 1/3;">
+
+                        </form>
+
+                        <div style="display: flex; grid-column: 1/3; justify-content: center;">
+                            <hr>
+                            <span style="font-size: medium; padding: 0 5px;">ou</span>
+                            <hr>
+                        </div>
+
+                        <p style="font-size: medium; grid-column: 1/3; justify-self: center;">Cliquer sur le boutton ci-dessous.</p>
+
+                        <input type="button" value="Ajouter un Voyage" onclick="showEditBox(0);">
+
+
+                        <table style="grid-row: 2/3;" >
+                            <thead>
+                                <tr>
+                                    <th>N°Voiture</th>
+                                    <th>Destination</th>                                
+                                    <th>Date de Voyage</th>
+                                    <th>Places</th>                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(i=0; i< trip.length; i++){
+                                    console.log(JSON.stringify(trip[i].dateVoyage));
+                                    let dateV = new Date(trip[i].dateVoyage.getTime());   
+                                %>
+
+                                    <tr>
+                                        <td><%=trip[i].idVoit.idVoit%></td>
+                                        <td><%=trip[i].destination%></td>
+                                        <td><%= dateV.toLocaleString() %></td>
+                                        <td><a href="/place/show?idPlace=<%= trip[i]._id%>&voiture=<%= JSON.stringify(trip[i].idVoit)%>&destination=<%= trip[i].destination %>&date=<%= trip[i].dateVoyage %>&place=<%= JSON.stringify(trip[i].place)%>"><img src="/static/image/availableSeats.png" alt="reserver"></a></td>
+                                    </tr>
+
+                                <%}%>
+
+                                <% if(trip==null || trip.length == 0){%>
+
+                                    <tr>
+                                        <td colspan="5">No result</td>
+                                    </tr>
+
+                                <%}%>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <% if(infoReservation!=null){%>                        
+                        <fieldset>
+                            <legend>Ajout RESERVATION</legend>
+                            <form onsubmit="submitForm(event);" method="post" class="ajout">
+
+                                <input type="text" name="idP" value="<%= infoReservation.idPlace %>" hidden>
+                                <input type="text" name="idV_Object" value="<%= infoReservation.idVoit._id %>" hidden>
+                                <input type="datetime" name="dateV" value="<%= infoReservation.date %>" hidden>
+
+                                <span class="num"><label for="idv"> N°Matriculation</label></br>
+                                    <input type= "text" id="idV" name="idV" placeholder="N°Matriculation" value="<%= infoReservation.idVoit.idVoit %>" readonly>
+                                </span>
+                                <span class="pay"><label for="paymt">Paiement</label></br>
+                                    <select name="paymt" id="paymt">
+                                        <option value="avec avance">avec avance</option>
+                                        <option value="sans avance">sans avance</option>
+                                    </select>
+                                </span>
+                                <span class="nom"><label for="idC">Nom Client</label></br>
+                                    <input type= "text" id="idC" name="nomClient"  placeholder="Nom client" >
+                                </span>
+                                <span class="placeRes"><label for="plcRES">N° Place</label></br>
+                                    <input type= "number" id="plcRES" name="plcRES"  placeholder="N° Place" value="<%= infoReservation.place.numero %>" readonly>
+                                </span>
+                                <span class="dateRes"><label for="dateRes">Date-Reservation</label></br>
+                                    <input type= "datetime" id="dateRes" name="dateRes"  value="<%= (new Date()).toLocaleString() %>" readonly>
+                                </span>
+                                <span class="dateVoyg"><label for="dateVoya">Date-Voyage</label></br>
+                                    <input type= "datetime" id="dateVoya" name="dateVoya" value="<%= (new Date(infoReservation.date)).toLocaleString() %>" readonly>
+                                </span>
+                                <span class="frais"><label for="frais">Frais</label></br>
+                                    <input type= "number" id="frais" name="frais" value="<%= infoReservation.idVoit.frais%>" readonly>
+                                </span>
+                                <span class="avance"><label for="avance">Montant Avance</label></br>
+                                    <input type= "number" id="avance" name="avance"  placeholder="4500Ar">
+                                </span>
+                                <input type="submit" value="Ajouter"> 
+                            </form>
+                            
+                        </fieldset>
+                    <%}%>
+                    
+
+                    <!-- EditBox where we will add a new trip -->
+
+                    <div class="parentContainer">
+                        <div class="boxEdit">
+                            <h4 style="text-align: center; margin-bottom: 20px;">Ajouter un Voyage</h4>
+                            <form action="/voyage/new" method="post">     
+                                <span class="nom">
+                                    <label for="idV"> N°Matriculation</label></br>
+                                    <input type= "text" id="idV" name="idVoit" placeholder="0329FH">
+                                </span>
+
+                                <span class="distination">
+                                    <label for="dest">Destination</label></br>
+                                    <input type= "text" id="dest" name="destination" placeholder="Tana">
+                                </span>
+
+                                <span class="num">
+                                    <label for="dateVoyage">Date de Voyage</label></br>
+                                    <input type= "datetime-local" id="dateVoyage" name="dateVoyage">
+                                </span>
+
+                                <input type="submit" value="Ajouter" style="grid-row: 3/4; grid-column: 1/2;"> 
+                                <input type="button" value="Annuler" id="cancelBtn0" style="grid-row: 3/4; grid-column: 2/3;"> 
+                                
+                            </form>
+                        </div>
+                </div>
+                    
+
+                    <!-- <fieldset class="research">
+                        <legend>Génération Réçu</legend> 
+                        <a href="#" class="pdf">Apperçu Réçu</a>
+                        <p>
+                            date reservation: 20 Mai 2023 <br>
+                            Date voyage: 25 Mai 2023 <br>
+                            Nom Client: Ha-tin'i Fa / Contact: 0345775442 <br>
+                            and so on... <br>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia tempore vitae eveniet, eligendi hic amet voluptates veritatis adipisci, delectus 
+                            deserunt expedita velit nam temporibus facilis natus culpa quam sint sunt autem dolorem iste quisquam pariatur.
+                        </p>
+    
+                        <a href="#" class="print">Imprimer</a>
+                        
+                    </fieldset> -->
+                </div>
+                        
+            </div>
+                    
+            
+        </div>
+    </div>
+    <script>
+        async function submitForm(event){
+            event.preventDefault();
+
+            let form = event.target;
+            let formData = new FormData(form);
+            let infoReservation = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('reserver/new',{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(infoReservation)
+                });
+
+                const result = await response.json();
+
+                if(result.success)
+                    alert("Réservation enregistrée avec succès");
+                else
+                    alert(`Erreur: ${result.message}`);
+
+            } catch (error) {
+                alert("Erreur lors de la communication au serveur.");
+            }
+        }
+    </script>
+    <script src="/static/js/menu.js"></script>
+</body>
+</html>

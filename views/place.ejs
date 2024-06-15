@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Place</title>
+</head>
+<body>
+    <div class="mainContent">
+        <%- include('./layout/navbar') %>
+        
+        <div class="form">
+            <div class="place fadeOut">
+                <div class="formVraie">
+                    <fieldset class="ajout">
+                        <legend>Information sur le Voyage</legend> 
+                            <span class="nom">
+                                <label for="idV"> N°Matriculation</label></br>
+                                <input type= "text" id="idV" value="<%= infoTrip.voiture.idVoit %>" readonly>
+                            </span>
+        
+                        <span class="num">
+                            <label for="dateVoyage">Date de Voyage</label></br>
+                            <input type= "datetime" id="dateVoyage" value="<%= new Date(infoTrip.date).toLocaleString() %>" readonly>
+                        </span>
+
+                        <span class="frais">
+                            <label for="destination">Destination</label></br>
+                            <input type= "text" id="destination" value="<%= infoTrip.destination %>" readonly>
+                        </span>
+        
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Les Places</legend>
+                        <!-- ny zavatra tiko hatao eto we ao @php ndry  no manao traitement de avieo
+                            mi-afficher an'reo eto iany fa ao @php no manova ny contenu html
+                           Fa nefa @io tonga de afficher-o aby ny place retra2 fa juste we 
+                            ny occupation no miova en fct ny enregistrer ao @BD-->
+                            <div style="max-height: 400px; overflow-y: scroll; min-width: fit-content;">
+                                <table style="margin: auto;">
+                                    <thead>
+                                        <tr>
+                                            <th>N°Place</th>
+                                            <th>Occupation</th>
+                                            <th>Reserver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <% for(i=1; i < infoTrip.place.length; i++){%>
+                                            <tr>
+                                                <td><%= infoTrip.place[i].numero %></td>   
+                                                <td><%= infoTrip.place[i].occupation %></td>
+                                                <% if(infoTrip.place[i].occupation === "non"){ %>
+                                                    <td><a href="/reserver?infoReservation=<%= JSON.stringify({idPlace: infoTrip.idPlace,idVoit: infoTrip.voiture, destination: infoTrip.destination, date: infoTrip.date, place: infoTrip.place[i]}) %> "><img src="/static/image/iconReserver.png" alt="reserver" width="25px"></a></td> 
+                                                <%}else{ %>
+                                                    <td><img src="/static/image/cross.svg" alt="reserver" width="15px"></td> 
+                                                <%} %>
+                                                
+                                            </tr>
+                                        <%}%>    
+                                               
+                                    </tbody>
+                                </table>
+                            </div>                           
+                    </fieldset>
+                
+                </div>
+                        
+            </div>
+                    
+            
+        </div>
+    </div>
+
+    <script src="/static/js/menu.js"></script>
+</body>
+</html>

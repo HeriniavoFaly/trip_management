@@ -1,0 +1,124 @@
+*, *::before, *::after
+{
+    margin: 0px;
+    padding: 0px;
+    outline: 0px;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
+
+@font-face {
+    font-family: 'thinkregular';
+    src: url('font/thinkFont/') format('woff2'),
+         url('font/thinkFont/') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'mortal_waveregular';
+    src: url('font/mortalWave/mortal_wave-webfont.woff2') format('woff2'),
+         url('font/mortalWave/mortal_wave-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body{
+padding: 5px 5px;
+font-family: 'thinkregular', serif;
+background-color: #ffd5e71a;
+}
+
+.mainContent
+{
+    max-width: 98vw;
+    min-width: 560px;
+    height: 99vh;
+     /* overflow: scroll; */
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    grid-template-rows: 1fr 6fr;
+    /* column-gap: 3px; */
+    border: 1px solid black;
+
+}
+.menu
+{
+    color: #a5bfc4;
+    background-image: url(../image/menubackG.jpeg);
+    background-size: cover;
+    grid-column: 1;
+    grid-row: 1/3;
+    width: 98vw; /*ty @v0 miditra*/
+    height: 99vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid black;
+ }
+
+ .menu .linearG
+ {
+    position: absolute;
+    top: 0px;right: 0px;bottom: 0px;left: 0px;
+    background-color: rgba(0, 0, 0, 0.799);
+    padding: 7vh 10px auto 10px;
+ }
+.phBienv p, .logoTopSet p
+{
+    display: block;
+    text-align: center;
+    font-size: 2.5em;
+    margin: 10px 15px 20px 15px;
+}
+
+.logoTopSet
+{
+    display: none;
+    grid-column: 2/3;
+    justify-self: center;
+}
+.logo
+{
+    font-family: 'mortal_waveregular', cursive;
+    font-size: 2em;
+    color: #fca028;
+}
+
+.navMenu
+{
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    padding-top: 20px;
+    margin-top: 9vh;
+}
+
+.navMenu a
+{
+    /* width: 43%;
+    height: 35px; */
+    width: 37vw;
+    height: fit-content;
+    margin: 3vh auto;/*margin: 10px 13px;*/
+    background-color: #7a4a0ba2;
+    color: inherit;
+    border-radius: 6px;
+    font-size:15px;
+    text-align: center;
+    padding: 6px 0px;
+    font-family: cursive, serif;
+    font-size: 20px;
+    cursor: url(hand.cur), pointer;
+}
+
+
+
+
+
+
+

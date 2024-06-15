@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Client</title>
+</head>
+<body>
+    <div class="mainContent">
+        <%- include('./layout/navbar') %>
+        
+        <div class="form">
+            <div class="client fadeOut">
+                <div class="formVraie">
+                    <fieldset>
+                        <legend>Ajout Client</legend>
+                        <form  class="ajout" action="/client/new" method="post">
+
+                            <span class="nom">
+                                <label for="nom"> Nom:</label> </br>
+                                <input type= "text" id="nom" name="nom" placeholder="votre nom ">
+                            </span>
+                            
+                            <span class="num">
+                                <label for="numtel"> Tel:</label> </br>
+                                <input type= "text" id="numtel" name="numTel"  placeholder="numero telephone" >
+                            </span>
+
+                            <input type="submit" value="Ajout"> 
+                            
+                        </form>
+                    </fieldset>
+                    <fieldset class="research">
+                        <legend>Rechercher Clients</legend> 
+                        <span class="searchBar">
+                            <form action="/client/search" method="post">
+                                <label for="search">Client: </label> </br>
+                                <input type="text" id="search" name="searchWord" placeholder="nom / Téléphone">
+                                <label for="submitSearch"><img src="/static/image/researchIcon.png" alt="btnRecherche"></label>
+                                <input type="submit" id="submitSearch" style="display: none;">
+
+                            </form>
+                        </span>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Téléphone</th>
+                                    <th>Supprimer</th>
+                                    <th>Modifier</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% for(i=0; i < Clients.length; i++){%>
+
+                                    <tr>
+                                        <td><%= Clients[i].nom %></td>
+                                        <td><%= Clients[i].numTel %></td> 
+                                        <td><a href="/client/delete?nom=<%= Clients[i].nom %>" class="suppr"><img src="/static/image/delete.png" alt="supprimer"></a></td>                                    
+                                        <td><button class="iconEdit line<%=i%>" style="border: none; background-color: white;"><img src="/static/image/edit.png" alt="modifier" ></button></td>
+
+                                    </tr>
+                                    <!-- EditBox where we can update the client -->
+
+                                    <div class="parentContainer">
+                                            <div class="boxEdit">
+                                                <h4 style="text-align: center; margin-bottom: 20px;">Modifier un client</h4>
+                                                <form action="/client/edit?id=<%= Clients[i]._id %>" method="post">     
+                                                    <div class="nom">
+                                                        <label for="nom"> Nom:</label> </br>
+                                                        <input type= "text" id="nomBoxEdit" name="nom" value="<%= Clients[i].nom %>" >
+                                                    </div>
+    
+                                                    <div class="num" >
+                                                        <label for="numtel"> Tel:</label> </br>
+                                                        <input type= "text" id="numtelBoxEdit" name="numTel" value="<%= Clients[i].numTel %>" >
+                                                    </div>
+                                                    <br>
+                                                    <div style="display: flex; flex-direction: row;">
+    
+                                                        <input type="submit" value="Modifier"> 
+                                                        <input type="button" value="Annuler" id="cancelBtn<%=i%>"> 
+                                                    </div>
+                                                </form>
+                                            </div>
+                                    </div>
+                                    
+                                    <% }%>
+
+
+                            </tbody>
+                        </table>
+                        
+                        <a href="/client1" class="lister">Lister</a>
+                    </fieldset>
+                </div>
+                        
+            </div>
+                    
+            
+        </div>
+    </div>
+
+
+
+    <script src="/static/js/menu.js"></script>
+</body>
+</html>

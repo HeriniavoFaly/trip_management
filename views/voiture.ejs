@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Voitures</title>
+</head>
+<body>
+
+    <div class="mainContent">
+        <%- include('./layout/navbar') %>
+        
+        <div class="form">
+            <div class="voiture fadeOut">
+                <div class="formVraie">
+                    <fieldset>
+                        <legend>Ajout VOITURE </legend>
+
+                        <form action="/voiture/new" method="post" class="ajout">
+
+                            <span class="nom">
+                                <label for="design"> Design:</label></br>
+                                <input type= "text" id="design" name="design" placeholder="ex. Crafter/...">
+                            </span>
+                            <span class="type">
+                                <label for="type"> Type</label></br>
+                                <select name="type" id="type">
+                                    <option value="simple">Simple</option>
+                                    <option value="premium">Premium</option>
+                                    <option value="VIP">VIP</option>
+                                </select>
+                            </span>
+                            <span class="nbPlace">
+                                <label for="nbPlace"> NbPlace</label></br>
+                                <input type= "number" id="nbPlace" name="nbrPlace"  placeholder="18places. " >
+                            </span>
+                            <span class="frais">
+                                <label for="frais"> Frais</label></br>
+                                <input type= "text" id="frais" name="frais"  placeholder="140Dh" >
+                            </span>
+                            <span class="num">
+                                <label for="numVoit"> N°Matriculation</label></br>
+                                <input type= "text" id="numVoit" name="idVoit"  placeholder="0329FH" >
+                            </span>
+
+                            <input type="submit" value="Ajout"> 
+
+                        </form>
+                    </fieldset>
+
+                    <fieldset class="research">
+                        <legend>Rechercher Voiture</legend> 
+                        <span class="searchBar">
+                            <form action="/voiture/search" method="post">
+
+                                <label for="searchCar">NumVoiture: </label> </br>
+                                <input type="text" id="searchCar" placeholder="Matriculation Voiture" name="idVoit">
+                                <label for="searchBtn"><img src="/static/image/researchIcon.png" alt="btnRecherche"></label> 
+                                <input id="searchBtn" type="submit" value="" style="display: none;">
+
+                            </form>
+                        </span>
+                        <table>
+                            <thead>
+
+                                <tr>
+                                    <th>N°Matricule</th>
+                                    <th>Design</th>
+                                    <th>Type</th>
+                                    <th>NbrPlace</th>
+                                    <th>Frais</th>
+                                    <th>Modifier</th>
+                                    <th>Supprimer</th>
+    
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <%for(i=0; i < cars.length; i++){%>
+
+                                    <tr>
+                                        <td><%= cars[i].idVoit%></td>
+                                        <td><%= cars[i].design%></td>
+                                        <td><%= cars[i].type%></td>
+                                        <td><%= cars[i].nbrPlace%></td>
+                                        <td><%= cars[i].frais%></td>
+                                        <!-- <td><a href="#" class="modif"><img src="/static/image/edit.png" alt="editer"></a></td> -->
+                                        <td><button class="iconEdit line<%=i%>" style="border: none; background-color: white;" ><img src="/static/image/edit.png" alt="editer"></button></td>
+                                        <td><a href="/voiture/delete?theCar=<%=cars[i]._id%>" class="suppr"><img src="/static/image/delete.png" alt="supprimer"></a></td>
+                                    </tr>
+
+                                    <!-- EditBox where we can update the client -->
+
+                                    <div class="parentContainer">
+                                        <div class="boxEdit">
+                                            <h4 style="text-align: center; margin-bottom: 20px;">Modifier une voiture</h4>
+                                            <form action="/voiture/edit?id=<%= cars[i]._id %>" method="post">
+                    
+                                                <div class="nom">
+                                                    <label for="design"> Design:</label></br>
+                                                    <input type= "text" id="design" name="design" value="<%= cars[i].design%>">
+                                                </div> 
+                                                <div class="type">
+                                                    <label for="type"> Type</label></br>
+                                                    <select name="type" id="type">
+                                                        <option value="<%= cars[i].type%>"><%= cars[i].type%></option>
+                                                        <option value="simple">Simple</option>
+                                                        <option value="premium">Premium</option>
+                                                        <option value="VIP">VIP</option>
+                                                    </select>
+                                                </div>
+                                                <div class="nbPlace">
+                                                    <label for="nbPlace"> NbPlace</label></br>
+                                                    <input type= "number" id="nbPlace" name="nbrPlace"  value="<%= cars[i].nbrPlace%>">
+                                                </div>
+                                                <div class="frais">
+                                                    <label for="frais"> Frais</label></br>
+                                                    <input type= "text" id="frais" name="frais"  value="<%= cars[i].frais%>">
+                                                </div>
+                                                <div class="num">
+                                                    <label for="numVoit"> N°Matriculation</label></br>
+                                                    <input type= "text" id="numVoit" name="idVoit"  value="<%= cars[i].idVoit%>" >
+                                                </div>
+                                                <br>
+                    
+                                                <div style="display: flex; flex-direction: row;">
+
+                                                    <input type="submit" value="Modifier"> 
+                                                    <input type="button" value="Annuler" id="cancelBtn<%=i%>"> 
+                                                </div>
+                                                
+                                            </form>
+                                        </div>
+                                </div>
+
+                                <%}%>
+                            </tbody>
+                        </table>
+                        
+                        
+                        <a href="/voiture/1" class="lister">Lister</a>
+                        <!-- <input type="submit" value="Modifier"> -->
+                    </fieldset>
+
+                    <fieldset class="researchVoy">
+                        <legend>Rechercher Voyageurs</legend> 
+                        <span class="searchBar">
+                            <label for="searchPassenger">NumVoiture: </label> </br>
+                            <input type="text" id="searchPassenger" placeholder="Matriculation Voiture">
+                            </span>
+                        
+                        <a href="#" class="lister">Afficher</a>
+        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Avance</th>
+                                    <th>Reste</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Faly</td>
+                                    <td>10000Ar</td>
+                                    <td>12000Ar</td>
+                                </tr>
+                                <tr>
+                                    <td>haingo</td>
+                                    <td>20000Ar</td>
+                                    <td>2000Ar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>Nombre total des voyageurs qui ont donnés l'avance: 45</p>
+                    </fieldset>
+                </div>
+                        
+            </div>
+                    
+            
+        </div>
+    </div>
+
+    <script src="/static/js/menu.js"></script>
+</body>
+</html>
